@@ -82,15 +82,23 @@ public class Character : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
+       
+        if (other.gameObject.tag == "Coin")
+        {
+       
+            coinCount++;
+            CoinText.GetComponent<Text>().text = "Coin: " + coinCount.ToString();
+            Destroy(other.gameObject);
+        }
+
+    }
+
+    private void OnCollision2D(Collider2D other)
+    {
         if (other.gameObject.tag == "Enemy")
         {
             healthCount -= 10;
-        }
-
-        if (other.gameObject.tag == "Coin")
-        {
-            Destroy(other.gameObject);
-            coinCount++;
+            HealthText.GetComponent<Text>().text = "Health: " + healthCount.ToString();
         }
 
     }
