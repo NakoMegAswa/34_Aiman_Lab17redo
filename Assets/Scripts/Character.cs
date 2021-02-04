@@ -6,8 +6,8 @@ using UnityEngine.UI;
 public class Character : MonoBehaviour
 {
     public float jumpForce;
-    private int healthCount;
-    private int coinCount;
+    public int healthCount;
+    public int coinCount;
     public float moveSpeed = 5.0f;
 
     private Rigidbody2D rb;
@@ -41,12 +41,23 @@ public class Character : MonoBehaviour
         {
             hVelocity = -moveSpeed;
             transform.localScale = new Vector3(-1, 1, 1);
+            animator.SetBool("Run", true);
        
+        }
+
+        if (Input.GetKeyUp(KeyCode.LeftArrow))
+        {
+            animator.SetBool("Run", false);
         }
         else if (Input.GetKey(KeyCode.RightArrow))
         {
             hVelocity = moveSpeed;
             transform.localScale = new Vector3(1, 1, 1);
+            animator.SetBool("Run", true);
+        }
+        if (Input.GetKeyUp(KeyCode.RightArrow))
+        {
+            animator.SetBool("Run", false);
         }
 
         if (Input.GetKeyDown(KeyCode.Space))
@@ -69,16 +80,16 @@ public class Character : MonoBehaviour
         
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    private void OnTriggerEnter2D(Collider2D other)
     {
-        if (collision.gameObject.tag == "Enemy")
+        if (other.gameObject.tag == "Enemy")
         {
             healthCount -= 10;
         }
 
-        if (collision.gameObject.tag == "Coin")
+        if (other.gameObject.tag == "Coin")
         {
-            Destroy(this.gameObject);
+            Destroy(other.gameObject);
             coinCount++;
         }
 
